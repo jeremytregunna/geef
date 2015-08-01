@@ -6,7 +6,7 @@ defmodule Geef.Reference do
 
   defstruct repo: nil, name: nil, type: nil, target: nil
 
-  def create(repo, name, target, force \\ :false) do
+  def create(repo, name, target, force \\ false) do
     # fixme: this needs to ask the repo itself
     repo_handle = :geef_repo.handle(repo)
     case :geef_nif.reference_create(repo_handle, name, :oid, target, force) do
@@ -16,11 +16,11 @@ defmodule Geef.Reference do
         error
     end
   end
-  def create!(repo, name, target, force \\ :false) do
+  def create!(repo, name, target, force \\ false) do
     create(repo, name, target, force) |> assert_ok
   end
 
-  def create_symbolic(repo, name, target, force \\ :false) do
+  def create_symbolic(repo, name, target, force \\ false) do
     # fixme: this needs to ask the repo itself
     repo_handle = :geef_repo.handle(repo)
     case :geef_nif.reference_create(repo_handle, name, :symbolic, target, force) do
@@ -30,7 +30,7 @@ defmodule Geef.Reference do
         error
     end
   end
-  def create_symbolic!(repo, name, target, force \\ :false) do
+  def create_symbolic!(repo, name, target, force \\ false) do
     create_symbolic(repo, name, target, force) |> assert_ok
   end
 

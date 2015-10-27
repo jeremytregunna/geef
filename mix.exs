@@ -69,6 +69,8 @@ defmodule Mix.Tasks.Compile.Nif do
     to_compile = Mix.Utils.extract_files(paths, exts)
     to_check = Mix.Utils.extract_files(paths, [:h | exts])
 
+    Mix.Project.build_structure
+
     case Mix.Utils.extract_stale(to_check, [file]) do
       [] ->
         :noop

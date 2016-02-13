@@ -10,7 +10,7 @@ defmodule Geef.Object do
   def lookup(repo, id) do
     case :geef_repo.lookup_object(repo, id) do
       {:ok, type, handle} ->
-        {:ok, %Geef.Object{type: type, id: id, handle: handle}}
+        {:ok, %Geef.Object{type: type, id: id, handle: handle, repo: repo}}
       error ->
         error
     end

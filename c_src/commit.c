@@ -157,3 +157,45 @@ geef_commit_message(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[])
 
 	return enif_make_tuple2(env, atoms.ok, enif_make_binary(env, &bin));
 }
+
+ERL_NIF_TERM
+geef_commit_author(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[])
+{
+	geef_object *obj;
+	git_signature *sig;
+	ERL_NIF_TERM name, email, time, offset;
+	int error;
+
+	if (!enif_get_resource(env, argv[0], geef_object_type, (void **) &obj))
+		return enif_make_badarg(env);
+
+	sig = git_commit_author((git_commit *) obj->obj);
+	error = geef_signature_to_erl(&name, &email, &time, &offset, env, sig);
+	git_signature_free(sig);
+
+	if (error < 0)
+		return geef_oom(env);
+
+	return enif_make_tuple5(env, atoms.ok, name, email, time, offset);
+}
+
+ERL_NIF_TERM
+geef_commit_committer(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[])
+{
+	geef_object *obj;
+	git_signature *sig;
+	ERL_NIF_TERM name, email, time, offset;
+	int error;
+
+	if (!enif_get_resource(env, argv[0], geef_object_type, (void **) &obj))
+		return enif_make_badarg(env);
+
+	sig = git_commit_committer((git_commit *) obj->obj);
+	error = geef_signature_to_erl(&name, &email, &time, &offset, env, sig);
+	git_signature_free(sig);
+
+	if (error < 0)
+		return geef_oom(env);
+
+	return enif_make_tuple5(env, atoms.ok, name, email, time, offset);
+}

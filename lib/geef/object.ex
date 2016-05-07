@@ -7,6 +7,10 @@ defmodule Geef.Object do
 
   defstruct type: nil, id: nil, handle: nil, repo: nil
 
+  def to_record(%Geef.Object{type: type, id: id, handle: handle}) do
+    {:geef_object, type, id, handle}
+  end
+
   def lookup(repo, id) do
     case :geef_repo.lookup_object(repo, id) do
       {:ok, type, handle} ->

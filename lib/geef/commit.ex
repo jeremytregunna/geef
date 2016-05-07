@@ -27,11 +27,43 @@ defmodule Geef.Commit do
   end
 
   @spec message(t) :: {:ok, String.t} | {:error, term}
-  def message(%Object{type: :commit, handle: handle}) do
-    :geef_nif.commit_message(handle)
+  def message(commit = %Object{type: :commit}) do
+    commit
+    |> Object.to_record()
+    |> :geef_commit.message()
   end
 
   @spec message!(t) :: String.t
   def message!(commit), do: message(commit) |> Geef.assert_ok
+
+  @spec committer(t) :: {:ok, Signature.t} | {:error, term}
+  def committer(commit = %Object{type: :commit}) do
+    maybe_signature =
+      commit
+    |> Object.to_record()
+    |> :geef_commit.committer()
+    case maybe_signature do
+      {:ok, record} -> {:ok, Signature.from_record(record)}
+      e -> e
+    end
+  end
+
+  @spec committer!(t) :: Signature.t
+  def committer!(commit), do: committer(commit) |> Geef.assert_ok
+
+  @spec author(t) :: {:ok, Signature.t} | {:error, term}
+  def author(commit = %Object{type: :commit}) do
+    maybe_signature =
+      commit
+    |> Object.to_record()
+    |> :geef_commit.author()
+    case maybe_signature do
+      {:ok, record} -> {:ok, Signature.from_record(record)}
+      e -> e
+    end
+  end
+
+  @spec author!(t) :: Signature.t
+  def author!(commit), do: author(commit) |> Geef.assert_ok
 
 end

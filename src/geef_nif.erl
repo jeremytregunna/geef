@@ -119,6 +119,14 @@ commit_create(_RepoHandle, _Ref, _Author, _Committer, _Encoding, _Message, _Tree
 commit_message(_CommitHandle) ->
     ?NIF_FN.
 
+-spec commit_author(term) -> {ok, binary(), binary(), non_neg_integer(), non_neg_integer()} | {error, term()}.
+commit_author(_CommitHandle) ->
+    ?NIF_FN.
+
+-spec commit_committer(term) -> {ok, binary(), binary(), non_neg_integer(), non_neg_integer()} | {error, term()}.
+commit_committer(_CommitHandle) ->
+    ?NIF_FN.
+
 -spec tree_bypath(term, iolist()) -> term().
 tree_bypath(_TreeHandle, _Path) ->
     nif_error(?LINE).

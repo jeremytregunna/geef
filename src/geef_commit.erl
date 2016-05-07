@@ -1,7 +1,7 @@
 -module(geef_commit).
 -export([tree_id/1, tree/1, lookup/2]).
 -export([create/5, create/6, create/7]).
--export([message/1]).
+-export([message/1, author/1, committer/1]).
 
 -include("geef_records.hrl").
 
@@ -48,7 +48,7 @@ create(Repo, Author = #geef_signature{}, Committer = #geef_signature{}, Message,
     create(Repo, Author, Committer, Message, Tree, Parents, []);
 
 % Version with both the same
-%% @doc Create a new commit. Person will be used for both author and commiter.
+%% @doc Create a new commit. Person will be used for both author and committer.
 create(Repo, Person = #geef_signature{}, Message, Tree, Parents, Opts) ->
     create(Repo, Person, Person, Message, Tree, Parents, Opts).
 
@@ -58,3 +58,21 @@ create(Repo, Person = #geef_signature{}, Message, Tree, Parents) ->
 -spec message(commit()) -> {ok, binary()} | {error, term()}.
 message(#geef_object{type=commit,handle=Handle}) ->
     geef_nif:commit_message(Handle).
+
+-spec author(commit()) -> {ok, geef_sig:signature()} | {error, term()}.
+author(#geef_object{type=commit,handle=Handle}) ->
+    case geef_nif:commit_author(Handle) of
+        {ok, Name, Email, Timestamp, Offset} ->
+            {ok, geef_sig:convert(Name, Email, Timestamp, Offset)};
+        Err = {error, _} ->
+            Err
+    end.
+
+-spec committer(commit()) -> {ok, geef_sig:signature()} | {error, term()}.
+committer(#geef_object{type=commit,handle=Handle}) ->
+    case geef_nif:commit_committer(Handle) of
+        {ok, Name, Email, Timestamp, Offset} ->
+            {ok, geef_sig:convert(Name, Email, Timestamp, Offset)};
+        Err = {error, _} ->
+            Err
+    end.

@@ -16,7 +16,7 @@ default(Repo) ->
     RepoHandle = geef_repo:handle(Repo),
     case geef_nif:signature_default(RepoHandle) of
         {ok, Name, Email, Timestamp, Offset} ->
-	    {ok, convert(Name, Email, Timestamp, Offset)};
+            {ok, convert(Name, Email, Timestamp, Offset)};
         Err = {error, _} ->
             Err
     end.
@@ -32,7 +32,6 @@ now(Name, Email) ->
     Offset = (Local - UTC) div 60,
     #geef_signature{name=Name, email=Email, time={Now, Offset}}.
 
-%% @private
 %% @doc convert the return from the NIF to a signature
 -spec convert(iolist(), iolist(), non_neg_integer(), non_neg_integer()) -> signature().
 convert(Name, Email, Timestamp, Offset) ->

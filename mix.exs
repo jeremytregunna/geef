@@ -132,7 +132,7 @@ defmodule Geef.Mixfile do
   # Returns the list of dependencies in the format:
   # { :foobar, "0.1", git: "https://github.com/elixir-lang/foobar.git" }
   defp deps do
-    []
+    [{:dialyxir, "~> 0.3", only: [:dev]}]
   end
 
   def dialyzer do

@@ -36,21 +36,6 @@ defmodule Geef.Commit do
   @spec message!(t) :: String.t
   def message!(commit), do: message(commit) |> Geef.assert_ok
 
-  @spec committer(t) :: {:ok, Signature.t} | {:error, term}
-  def committer(commit = %Object{type: :commit}) do
-    maybe_signature =
-      commit
-    |> Object.to_record()
-    |> :geef_commit.committer()
-    case maybe_signature do
-      {:ok, record} -> {:ok, Signature.from_record(record)}
-      e -> e
-    end
-  end
-
-  @spec committer!(t) :: Signature.t
-  def committer!(commit), do: committer(commit) |> Geef.assert_ok
-
   @spec author(t) :: {:ok, Signature.t} | {:error, term}
   def author(commit = %Object{type: :commit}) do
     maybe_signature =
@@ -65,5 +50,20 @@ defmodule Geef.Commit do
 
   @spec author!(t) :: Signature.t
   def author!(commit), do: author(commit) |> Geef.assert_ok
+
+  @spec committer(t) :: {:ok, Signature.t} | {:error, term}
+  def committer(commit = %Object{type: :commit}) do
+    maybe_signature =
+      commit
+    |> Object.to_record()
+    |> :geef_commit.committer()
+    case maybe_signature do
+      {:ok, record} -> {:ok, Signature.from_record(record)}
+      e -> e
+    end
+  end
+
+  @spec committer!(t) :: Signature.t
+  def committer!(commit), do: committer(commit) |> Geef.assert_ok
 
 end

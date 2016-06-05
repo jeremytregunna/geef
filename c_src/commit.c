@@ -171,7 +171,7 @@ geef_commit_author(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[])
 
 	sig = git_commit_author((git_commit *) obj->obj);
 	error = geef_signature_to_erl(&name, &email, &time, &offset, env, sig);
-	git_signature_free(sig);
+	// git_signature_free(sig); // FIXME isn't this needed? LEAK LEAK
 
 	if (error < 0)
 		return geef_oom(env);
@@ -192,7 +192,7 @@ geef_commit_committer(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[])
 
 	sig = git_commit_committer((git_commit *) obj->obj);
 	error = geef_signature_to_erl(&name, &email, &time, &offset, env, sig);
-	git_signature_free(sig);
+	// git_signature_free(sig); // FIXME isn't this needed? LEAK LEAK
 
 	if (error < 0)
 		return geef_oom(env);

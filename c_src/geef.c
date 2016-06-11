@@ -195,6 +195,8 @@ static ErlNifFunc geef_funcs[] =
 	{"commit_message", 1, geef_commit_message},
 	{"commit_author", 1, geef_commit_author},
 	{"commit_committer", 1, geef_commit_committer},
+	{"commit_parent_count", 1, geef_commit_parent_count},
+	{"commit_parent_id", 2, geef_commit_parent_id},
 	{"tree_bypath", 2, geef_tree_bypath},
 	{"tree_nth",     2, geef_tree_nth},
 	{"tree_count",   1, geef_tree_count},

@@ -127,6 +127,14 @@ commit_author(_CommitHandle) ->
 commit_committer(_CommitHandle) ->
     ?NIF_FN.
 
+-spec commit_parent_count(term) -> {ok, pos_integer()} | {error, term()}.
+commit_parent_count(_CommitHandle) ->
+    ?NIF_FN.
+
+-spec commit_parent_id(term, non_neg_integer()) -> {ok, binary()} | {error, term()}.
+commit_parent_id(_CommitHandle, _Nth) ->
+    ?NIF_FN.
+
 -spec tree_bypath(term, iolist()) -> term().
 tree_bypath(_TreeHandle, _Path) ->
     nif_error(?LINE).

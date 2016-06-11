@@ -2,6 +2,7 @@
 -export([tree_id/1, tree/1, lookup/2]).
 -export([create/5, create/6, create/7]).
 -export([message/1, author/1, committer/1]).
+-export([parent_count/1, parent_id/2]).
 
 -include("geef_records.hrl").
 
@@ -76,3 +77,11 @@ committer(#geef_object{type=commit,handle=Handle}) ->
         Err = {error, _} ->
             Err
     end.
+
+-spec parent_count(commit()) -> {ok, pos_integer()} | {error, term()}.
+parent_count(#geef_object{type=commit,handle=Handle}) ->
+    geef_nif:commit_parent_count(Handle).
+
+-spec parent_id(commit(), non_neg_integer()) -> {ok, geef_oid:oid()} | {error, term()}.
+parent_id(#geef_object{type=commit,handle=Handle}, Nth) ->
+    geef_nif:commit_parent_id(Handle, Nth).

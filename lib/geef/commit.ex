@@ -66,4 +66,24 @@ defmodule Geef.Commit do
   @spec committer!(t) :: Signature.t
   def committer!(commit), do: committer(commit) |> Geef.assert_ok
 
+  @spec parent_count(t) :: {:ok, pos_integer} | {:error, term}
+  def parent_count(commit = %Object{type: :commit}) do
+    commit
+    |> Object.to_record()
+    |> :geef_commit.parent_count()
+  end
+
+  @spec parent_count!(t) :: pos_integer
+  def parent_count!(commit), do: parent_count(commit) |> Geef.assert_ok
+
+  @spec parent_id(t, non_neg_integer) :: {:ok, Oid.t} | {:error, term}
+  def parent_id(commit = %Object{type: :commit}, n) do
+    commit
+    |> Object.to_record()
+    |> :geef_commit.parent_id(n)
+  end
+
+  @spec parent_id!(t, non_neg_integer) :: Oid.t
+  def parent_id!(commit, n), do: parent_id(commit, n) |> Geef.assert_ok
+
 end

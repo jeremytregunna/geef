@@ -199,3 +199,38 @@ geef_commit_committer(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[])
 
 	return enif_make_tuple5(env, atoms.ok, name, email, time, offset);
 }
+
+ERL_NIF_TERM
+geef_commit_parent_count(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[])
+{
+	geef_object *obj;
+	unsigned int count;
+
+	if (!enif_get_resource(env, argv[0], geef_object_type, (void **) &obj))
+		return enif_make_badarg(env);
+
+	count = git_commit_parentcount((git_commit *) obj->obj);
+	return enif_make_tuple2(env, atoms.ok, enif_make_uint(env, count));
+}
+
+ERL_NIF_TERM
+geef_commit_parent_id(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[])
+{
+	geef_object *obj;
+	unsigned int nth;
+	const git_oid *id;
+	geef_object *bin;
+
+	if (!enif_get_resource(env, argv[0], geef_object_type, (void **) &obj))
+		return enif_make_badarg(env);
+
+	if (!enif_get_uint(env, argv[1], &nth))
+		return enif_make_badarg(env);
+
+	id = git_commit_parent_id((git_commit *) obj->obj, nth);
+
+	if (geef_oid_bin(&bin, id) < 0)
+		return geef_oom(env);
+
+	return enif_make_tuple2(env, atoms.ok, enif_make_binary(env, &bin));
+}

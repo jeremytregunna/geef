@@ -1,11 +1,12 @@
 defmodule RevwalkTest do
   use ExUnit.Case
   use Geef
+
   import RepoHelpers
 
 
   setup do
-    {repo, path, head, boring_ancestor} = tmp_commit_line
+    {repo, path, head, boring_ancestor} = tmp_commit_line()
     Process.link(repo)
     {:ok, walk} = Repository.revwalk(repo)
     on_exit(fn -> File.rm_rf!(path) end)

@@ -5,7 +5,7 @@ defmodule ConfigTest do
 
 
   setup do
-    {repo, path} = tmp_bare
+    {repo, path} = tmp_bare()
     Process.link(repo)
     {:ok, config} = Repository.config(repo)
     on_exit(fn -> File.rm_rf!(path) end)

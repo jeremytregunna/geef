@@ -1,8 +1,8 @@
-require Record
-
 defmodule Geef.Iterator do
   alias Geef.Iterator
   alias Geef.Reference
+
+  require Record
 
   record = Record.extract(:geef_iterator, from: "src/geef_records.hrl")
   keys   = :lists.map(&elem(&1, 0), record)

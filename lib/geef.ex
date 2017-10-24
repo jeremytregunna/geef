@@ -1,5 +1,4 @@
 defmodule Geef do
-
   defmacro __using__(_) do
     quote do
       alias Geef.Blob
@@ -22,5 +21,4 @@ defmodule Geef do
 
   def assert_ok({:ok, ref}), do: ref
   def assert_ok({:error, error}), do: raise error
-
 end

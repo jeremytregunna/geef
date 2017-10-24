@@ -1,5 +1,3 @@
-require Record
-
 defmodule Geef.TreeEntry do
   defstruct mode: nil, type: nil, id: nil, name: nil
 end
@@ -7,6 +5,8 @@ end
 defmodule Geef.Tree do
   alias Geef.Object
   alias Geef.TreeEntry
+
+  require Record
 
   @type t :: Object[type: :tree]
 

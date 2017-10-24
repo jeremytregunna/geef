@@ -1,6 +1,7 @@
-require Record
-
 defmodule Geef.Signature do
+
+  require Record
+
   defstruct Record.extract(:geef_signature, from: "src/geef_records.hrl")
 
   def now(name, email), do: :geef_sig.now(name, email) |> from_record
@@ -17,5 +18,4 @@ defmodule Geef.Signature do
   def to_record(%Geef.Signature{name: name, email: email, time: time}) do
     {:geef_signature, name, email, time}
   end
-
 end

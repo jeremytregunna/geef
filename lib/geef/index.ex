@@ -1,6 +1,6 @@
-require Record
-
 defmodule Geef.Index.Entry do
+  require Record
+
   record = Record.extract(:geef_index_entry, from: "src/geef_records.hrl")
   keys   = :lists.map(&elem(&1, 0), record)
   vals   = :lists.map(&{&1, [], nil}, keys)

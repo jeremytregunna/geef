@@ -1,9 +1,10 @@
-require Record
-
 defmodule Geef.Object do
   @behaviour Access
+
   alias Geef.Object
   alias Geef.Tree
+
+  require Record
 
   defstruct type: nil, id: nil, handle: nil, repo: nil
 
@@ -48,16 +49,18 @@ defmodule Geef.Object do
     Tree.get(tree, key)
   end
 
-  def get(tree = %Object{type: :tree}, key) do
+  def get(tree = %Object{type: :tree}, key, default) do
     case fetch(tree, key) do
       {:ok, entry} -> entry
-      {:error, _} -> nil
+      {:error, _} -> default
     end
   end
 
-  # Git data is immutable
   def get_and_update(_tree, _key, _fun) do
-    raise ArgumentError
+    raise ArgumentError, message: "Git data is immutable"
   end
 
+  def pop(_tree, _key) do
+    raise ArgumentError, message: "Git data is immutable"
+  end
 end

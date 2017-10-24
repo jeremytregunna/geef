@@ -55,13 +55,9 @@ defmodule Mix.Tasks.Compile.Nif do
     compiler = Keyword.get(config, :compilers, ["cc", "gcc", "clang"]) |> find_compiler
 
     flags =
-    if cflags = System.get_env("CFLAGS") do
-      # FIXME: this isn't going to work too well with quoted spaces
-      # inside arguments
-      [flags, String.split(cflags)]
-    else
-      flags
-    end
+      if cflags = System.get_env("CFLAGS"),
+        do: [flags, String.split(cflags)],
+      else: flags
 
     # Create the directory (e.g. "priv/")
     File.mkdir_p!(Path.dirname(file))
@@ -115,16 +111,16 @@ defmodule Geef.Mixfile do
   use Mix.Project
 
   def project do
-    [ app: :geef,
-      version: "0.0.1",
-      compilers: [:nif, :erlang, :elixir, :app],
-      deps: deps,
-      dialyzer: dialyzer ]
+    [app: :geef,
+     version: "0.0.1",
+     compilers: [:nif, :erlang, :elixir, :app],
+     deps: deps(),
+     dialyzer: dialyzer()]
   end
 
   def nif do
-    [ file: "#{Path.join [__DIR__, "priv", "geef.so"]}",
-      flags: "-lgit2" ]
+    [file: "#{Path.join [__DIR__, "priv", "geef.so"]}",
+     flags: "-lgit2"]
   end
 
   # Configuration for the OTP application
@@ -135,12 +131,11 @@ defmodule Geef.Mixfile do
   # Returns the list of dependencies in the format:
   # { :foobar, "0.1", git: "https://github.com/elixir-lang/foobar.git" }
   defp deps do
-    [{:dialyxir, "~> 0.3", only: [:dev]}]
+    [{:dialyxir, "~> 0.5", only: [:dev]}]
   end
 
   def dialyzer do
-    [ plt_apps: [:erts, :kernel, :stdlib, :mnesia],
-      flags: ["-Wunmatched_returns","-Werror_handling","-Wrace_conditions", "-Wno_opaque"]]
+    [plt_apps: [:erts, :kernel, :stdlib, :mnesia],
+     flags: ["-Wunmatched_returns","-Werror_handling","-Wrace_conditions", "-Wno_opaque"]]
   end
-
 end

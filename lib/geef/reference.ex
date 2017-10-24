@@ -1,8 +1,9 @@
-require Record
-
 defmodule Geef.Reference do
-  import Geef
   alias Geef.Reference
+
+  require Record
+
+  import Geef
 
   defstruct repo: nil, name: nil, type: nil, target: nil
 
